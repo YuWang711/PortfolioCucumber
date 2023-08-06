@@ -10,4 +10,8 @@ public class HomePage extends Browser {
     public void GoToHomePage(){
         this.GoTo(url);
     }
+
+    public boolean checkIfOnHomePage(){
+        return CheckForURL(url);
+    }
 }

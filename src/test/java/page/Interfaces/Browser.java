@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -19,10 +20,14 @@ public class Browser {
         System.setProperty("webdriver.gecko.driver", firefoxPath);
         if(driver == null){
             driver = new FirefoxDriver();
-            PageFactory.initElements(driver, this);
             jsExecutor = (JavascriptExecutor) driver;
         }
     }
+
+    public void InitElements(){
+        PageFactory.initElements(driver, this);
+    }
+
     protected WebDriver getDriver(){
         return driver;
     }
@@ -33,8 +38,39 @@ public class Browser {
     }
 
     protected void Click(WebElement element){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.and(
+                ExpectedConditions.elementToBeClickable(element)));
         highlightElement(element, "green", "2px solid");
         element.click();
+    }
+
+    protected void Input(WebElement element, String input){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//        wait.until(ExpectedConditions.and(
+//                ExpectedConditions.element(element)));
+        highlightElement(element, "green", "2px solid");
+        element.sendKeys(input);
+    }
+
+    protected boolean CheckForURL(String url){
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        return this.getDriver().getCurrentUrl().equals(url);
+    }
+
+    protected boolean CheckIfPresence(WebElement element){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement ele = wait.until(ExpectedConditions.visibilityOf(element));
+        if(ele == null){
+            return false;
+        }
+        return true;
+    }
+
+    protected String getInnerMessage(WebElement element){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement ele = wait.until(ExpectedConditions.visibilityOf(element));
+        return ele.getText();
     }
 
     protected static void highlightElement(WebElement element, String color, String borderStyle) {

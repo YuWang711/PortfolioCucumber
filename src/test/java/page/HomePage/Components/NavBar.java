@@ -13,15 +13,15 @@ public class NavBar extends HomePage {
     private WebElement About;
     @FindBy(xpath = "/html/body/div/div/nav/div/div[2]/a[text()='Projects']")
     private WebElement Projects;
-    @FindBy(xpath = "/html/body/div/div/nav/div/div[2]/a[text()='MyProjects']")
+    @FindBy(xpath = "/html/body/div/div/nav/div/div[2]/a[text()='My Projects']")
     private WebElement MyProject;
     @FindBy(xpath = "/html/body/div/div/nav/div/div[2]/a[text()='Admin']")
     private WebElement Admin;
-    @FindBy(xpath = "/html/body/div/div/nav/div/div[2]/a[text()='Sign Out']")
+    @FindBy(xpath = "/html/body/div/div/nav/div/a/div")
     private WebElement SignOut;
 
     public NavBar(){
-
+        this.InitElements();
     }
 
     public void clickOnLogin(){
@@ -44,6 +44,10 @@ public class NavBar extends HomePage {
     }
     public void clickOnSignOut(){
         Click(SignOut);
+    }
+
+    public boolean checkIfMyProjectIsAccessible(){
+        return CheckIfPresence(MyProject);
     }
 
 }
